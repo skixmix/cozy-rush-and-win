@@ -6,10 +6,10 @@ function FormTitleSection(): JSX.Element {
     <>
       <img
         src="/img/cat.png"
-        alt="Your"
-        style={{ width: "300px", marginBottom: "10px" }}
+        alt="CozyGamez logo"
+        style={{ width: "200px", marginBottom: "5px" }}
       />
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h4" gutterBottom marginBottom={"20px"}>
         Enter your code here
       </Typography>
     </>

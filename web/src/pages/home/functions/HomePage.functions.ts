@@ -5,9 +5,9 @@ import {
 } from "../interfaces/HomePage.interfaces";
 
 export const defaultErrorMessage =
-  "This code is not valid. If you want to obtain a valid code, make sure to ";
+  "This code is not valid. If you want to obtain a valid code, make sure to subscribe and turn on notifications!";
 export const codeAlreadyUsedErrorMessage =
-  "Awww snap! The code was already used by someone else! Want new codes? ";
+  "Awww snap! The code was already used by someone else! Want new codes? Make sure to subscribe and turn on notifications!";
 export const defaultResponse: ICodeSubmitResult = {
   status: StatusTypeEnum.error,
   errorMessage: defaultErrorMessage,

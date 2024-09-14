@@ -5,8 +5,6 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-
-import "./App.css";
 import HomePage from "./pages/home/HomePage";
 import Disclaimer from "./pages/disclaimer/Disclaimer";
 

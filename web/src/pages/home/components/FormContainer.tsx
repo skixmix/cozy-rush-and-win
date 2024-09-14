@@ -15,7 +15,7 @@ function FormContainer({ children }: IFormContainer): JSX.Element {
         textAlign: "center",
       }}
     >
-      {children}
+      <Box maxWidth={"350px"}>{children}</Box>
     </Box>
   );
 }

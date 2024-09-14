@@ -3,9 +3,26 @@ import FormContainer from "./components/FormContainer";
 import FormTitleSection from "./components/FormTitleSection";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import ErrorMessage from "./components/ErrorMessage";
+import ResultMessage from "./components/ResultMessage";
 import { checkCodeValidity } from "./functions/HomePage.functions";
 import { StatusTypeEnum } from "./interfaces/HomePage.interfaces";
+import { Box, Link, styled } from "@mui/material";
+import { BLACK_COLOR, WHITE_COLOR } from "../../theme";
+import FollowMeCta from "./components/FollowMeCta";
+import CongratsText from "./components/Congrats/CongratsText";
+
+const SubmitButton = styled(Button)(({ theme }) => ({
+  backgroundColor: "#FCBB5E",
+  border: `3px solid ${BLACK_COLOR}`,
+  borderRadius: "12px",
+  width: "200px",
+  height: "55px",
+  color: BLACK_COLOR,
+  boxShadow: `0 13px ${BLACK_COLOR}`,
+  "&:hover": {
+    boxShadow: `0 10px ${BLACK_COLOR}`,
+  },
+}));
 
 function HomePage(): JSX.Element {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -22,11 +39,13 @@ function HomePage(): JSX.Element {
       setIsLoading(true);
       const result = await checkCodeValidity(currentInputValue);
 
-      if (result.status === StatusTypeEnum.error && result.errorMessage) {
+      if (result.status !== StatusTypeEnum.ok && result.errorMessage) {
         setErrorMessage(result.errorMessage!);
       } else if (result.obtainedCode) {
         setSuccessMessage(
-          "WOW, that's a valid code! Here is your key: " + result.obtainedCode
+          "WOW, that's a valid code!<br/>Here is your key<br/><br/>" +
+            result.obtainedCode +
+            "<br/><br/>Please copy it and keep it safe, you will not be able to see it again!"
         );
       }
       setIsLoading(false);
@@ -63,9 +82,9 @@ function HomePage(): JSX.Element {
     <FormContainer>
       <FormTitleSection />
       <TextField
-        label="e.g. 0123ABCD"
+        label="Enter your code"
         variant="outlined"
-        sx={{ marginBottom: "20px", width: "100%", maxWidth: "400px" }}
+        sx={{ marginBottom: "20px", width: "100%" }}
         slotProps={{
           htmlInput: {
             maxLength: 8,
@@ -74,24 +93,47 @@ function HomePage(): JSX.Element {
         }}
         value={currentInputValue}
         onChange={handleTextInput}
-        disabled={isLoading}
+        disabled={isLoading || isInSuccessState || isInErrorState}
       />
 
       {isInSuccessState ? (
-        <>{successMessage}</>
+        <>
+          <CongratsText />
+          <ResultMessage
+            icon={
+              <i
+                className="fas fa-face-smile"
+                style={{ fontSize: "30px", color: BLACK_COLOR }}
+              ></i>
+            }
+            message={successMessage}
+          />
+        </>
       ) : (
         <>
-          <Button
+          <SubmitButton
             variant="contained"
             color="primary"
-            sx={{ width: "100%", maxWidth: "400px" }}
             onClick={isInErrorState ? handleTryAgain : handleSubmit}
           >
             {submitButtonText}
-          </Button>
-          {isInErrorState ? <ErrorMessage message={errorMessage} /> : <></>}
+          </SubmitButton>
+          {isInErrorState ? (
+            <ResultMessage
+              icon={
+                <i
+                  className="fas fa-face-frown"
+                  style={{ fontSize: "30px", color: BLACK_COLOR }}
+                ></i>
+              }
+              message={errorMessage}
+            />
+          ) : (
+            <></>
+          )}
         </>
       )}
+      <FollowMeCta />
     </FormContainer>
   );
 }

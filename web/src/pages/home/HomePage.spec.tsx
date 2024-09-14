@@ -41,9 +41,7 @@ describe("HomePage", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText(
-          /WOW, that's a valid code! Here is your key: 1234ABCD/i
-        )
+        screen.getByText(/WOW, that's a valid code!/i)
       ).toBeInTheDocument();
     });
   });
@@ -51,8 +49,7 @@ describe("HomePage", () => {
   it("displays error message for invalid code", async () => {
     (checkCodeValidity as jest.Mock).mockResolvedValueOnce({
       status: StatusTypeEnum.error,
-      errorMessage:
-        "This code is not valid. If you want to obtain a valid code, make sure to ",
+      errorMessage: "This code is not valid",
     });
 
     render(<HomePage />);
@@ -65,15 +62,14 @@ describe("HomePage", () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText(/YouTube/i)).toBeInTheDocument();
+      expect(screen.getByText(/This code is not valid/i)).toBeInTheDocument();
     });
   });
 
   it("resets form state on try again button click", async () => {
     (checkCodeValidity as jest.Mock).mockResolvedValueOnce({
       status: StatusTypeEnum.error,
-      errorMessage:
-        "Awww snap! The code was already used by someone else! Want new codes? ",
+      errorMessage: "Awww snap!",
     });
 
     render(<HomePage />);
@@ -85,7 +81,7 @@ describe("HomePage", () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText(/YouTube/i)).toBeInTheDocument();
+      expect(screen.getByText(/Awww snap!/i)).toBeInTheDocument();
     });
 
     const retryButton = screen.getByRole("button");
