@@ -10,7 +10,8 @@ $dbname = $config['DB_NAME'];
 function connectToDatabase($servername, $username, $password, $dbname) {
     $connection = new mysqli($servername, $username, $password, $dbname);
     if ($connection->connect_error) {
-        sendErrorResponse(500, "Database connection failed.");
+        sendErrorResponse(500);
+        exit();
     }
     return $connection;
 }
@@ -34,7 +35,6 @@ function updateCodeStatus($connection, $code) {
 function sendErrorResponse($statusCode) {
     http_response_code($statusCode);
     echo json_encode(["status" => "error"]);
-    exit();
 }
 
 function sendSuccessResponse($status, $code = null) {
@@ -44,7 +44,6 @@ function sendSuccessResponse($status, $code = null) {
         $response["code"] = $code;
     }
     echo json_encode($response);
-    exit();
 }
 
 $connection = connectToDatabase($servername, $username, $password, $dbname);
@@ -52,6 +51,8 @@ $requestData = getRequestData();
 
 if (!isset($requestData['text'])) {
     sendErrorResponse(400);
+    $connection->close();
+    exit();
 }
 
 $code = $requestData['text'];
@@ -63,9 +64,13 @@ if ($codeWasFoundInDB) {
 
     if ($codeDetails['already_used'] == 1) {
         sendSuccessResponse("alreadyUsed");
+        $connection->close();
+        exit();
     } else {
         $updateSuccess = updateCodeStatus($connection, $code);
         sendSuccessResponse("ok", $codeDetails['corresponding_code']);
+        $connection->close();
+        exit();
     }
 } else {
     sendErrorResponse(404);
