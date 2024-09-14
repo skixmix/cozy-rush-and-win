@@ -1,0 +1,58 @@
+name: Build and push to FTP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-hugo:
+    name: Build site
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4.1.1
+        with:
+          submodules: true
+          # https://stackoverflow.com/questions/72978485/git-submodule-update-failed-with-fatal-detected-dubious-ownership-in-repositor
+          set-safe-directory: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "21.6.1"
+
+      - name: Install dependencies
+        run: |
+          npm install
+        working-directory: ./web
+
+      - name: Test
+        run: |
+          npm test
+        working-directory: ./web
+
+      - name: Build
+        run: |
+          npm run build
+        working-directory: ./web
+
+      - name: 📂 Sync Website files on FTP
+        # https://github.com/marketplace/actions/ftp-deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.ftp_server }}
+          username: ${{secrets.ftp_username}}
+          password: ${{ secrets.ftp_password }}
+          local-dir: ./web/build/
+          server-dir: ./cozygamez/
+
+      - name: 📂 Sync also PHP files on FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.ftp_server }}
+          username: ${{secrets.ftp_username}}
+          password: ${{ secrets.ftp_password }}
+          local-dir: ./backend/
+          server-dir: ./cozygamez/api/

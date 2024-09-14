@@ -6,8 +6,8 @@ import Button from "@mui/material/Button";
 import ResultMessage from "./components/ResultMessage";
 import { checkCodeValidity } from "./functions/HomePage.functions";
 import { StatusTypeEnum } from "./interfaces/HomePage.interfaces";
-import { Box, Link, styled } from "@mui/material";
-import { BLACK_COLOR, WHITE_COLOR } from "../../theme";
+import { styled } from "@mui/material/styles";
+import { BLACK_COLOR } from "../../theme";
 import FollowMeCta from "./components/FollowMeCta";
 import CongratsText from "./components/Congrats/CongratsText";
 

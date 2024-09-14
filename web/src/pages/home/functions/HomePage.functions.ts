@@ -21,7 +21,7 @@ export async function checkCodeValidity(
   code: String | null
 ): Promise<ICodeSubmitResult> {
   try {
-    const response = await fetch("your-server-url-here.php", {
+    const response = await fetch("https://cozygamez.ovh/api/check", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
