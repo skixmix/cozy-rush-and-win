@@ -2,15 +2,6 @@ Options -Indexes
 ErrorDocument 403 "Access Denied. You cannot view the contents of this directory."
 
 RewriteEngine On
-RewriteBase /
-
-# Rewrite www
-RewriteCond %{HTTP_HOST} ^www\.(.*) [NC]
-RewriteRule ^(.*)$ https://%1/$1 [R=301,NC,L]
-
-# Rewrite https
-RewriteCond %{HTTPS} !=on
-RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
 
 # Rewrite /check
 RewriteRule ^check$ code_checker.php [L]
