@@ -1,2 +1,5 @@
 RewriteEngine On
-RewriteRule ^api/check$ /api/code_checker.php [L]
+
+# Redirect /api/check to /api/code_checker.php
+
+RewriteRule ^check$ code_checker.php [L]
