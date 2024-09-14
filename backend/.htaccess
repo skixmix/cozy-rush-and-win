@@ -1,5 +1,5 @@
+Options -Indexes
+ErrorDocument 403 "Access Denied. You cannot view the contents of this directory."
+
 RewriteEngine On
-
-# Redirect /api/check to /api/code_checker.php
-
 RewriteRule ^check$ code_checker.php [L]
