@@ -3,5 +3,5 @@ import Disclaimer from "./Disclaimer";
 
 test("renders correctly", () => {
   render(<Disclaimer />);
-  expect(screen.getByText("DISCLAIMER")).toBeInTheDocument();
+  expect(screen.getByText("Disclaimer")).toBeInTheDocument();
 });
