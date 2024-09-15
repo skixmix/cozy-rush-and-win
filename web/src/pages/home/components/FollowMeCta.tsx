@@ -5,7 +5,12 @@ import { WHITE_COLOR } from "../../../theme";
 
 function FollowMeCta(): JSX.Element {
   return (
-    <Box marginTop={"40px"}>
+    <Box
+      marginTop={"40px"}
+      display={"flex"}
+      justifyContent={"center"}
+      flexDirection={"column"}
+    >
       <Link
         color={WHITE_COLOR}
         fontSize={"25px"}
@@ -15,6 +20,16 @@ function FollowMeCta(): JSX.Element {
         target="_blank"
       >
         Follow me on <i className="fab fa-youtube"></i>
+      </Link>
+      <Link
+        marginTop={"30px"}
+        color={WHITE_COLOR}
+        fontSize={"18px"}
+        underline="hover"
+        fontFamily={"MoreSugar"}
+        href="/disclaimer"
+      >
+        Disclaimer
       </Link>
     </Box>
   );
