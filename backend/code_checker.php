@@ -32,6 +32,12 @@ function updateCodeStatus($connection, $code) {
     return $connection->query($updateQuery);
 }
 
+function updateCodeAttempts($connection, $code) {
+    $escapedCode = $connection->real_escape_string($code);
+    $updateQuery = "UPDATE cozy_gamez_giveaways SET attempts = attempts + 1 WHERE video_code = '$escapedCode'";
+    return $connection->query($updateQuery);
+}
+
 function sendErrorResponse($statusCode) {
     http_response_code($statusCode);
     echo json_encode(["status" => "error"]);
@@ -63,11 +69,12 @@ if ($codeWasFoundInDB) {
     $codeDetails = $result->fetch_assoc();
 
     if ($codeDetails['already_used'] == 1) {
+        updateCodeAttempts($connection, $code);
         sendSuccessResponse("alreadyUsed");
         $connection->close();
         exit();
     } else {
-        $updateSuccess = updateCodeStatus($connection, $code);
+        updateCodeStatus($connection, $code);
         sendSuccessResponse("ok", $codeDetails['corresponding_code']);
         $connection->close();
         exit();
